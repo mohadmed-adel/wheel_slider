@@ -1,5 +1,7 @@
 library wheel_slider;
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wheel_chooser/wheel_chooser.dart';
@@ -323,6 +325,7 @@ class _WheelSliderState extends State<WheelSlider> {
 
   @override
   Widget build(BuildContext context) {
+    log("widget.listHeight ${widget.listHeight}");
     return SizedBox(
       height: widget.horizontal
           ? widget.horizontalListHeight
@@ -367,11 +370,17 @@ class _WheelSliderState extends State<WheelSlider> {
             squeeze: widget.squeeze,
             physics: widget.scrollPhysics,
           ),
-          IgnorePointer(
-            ignoring: widget.allowPointerTappable,
-            child: Visibility(
-              visible: widget.showPointer,
-              child: widget.customPointer ?? widget.pointer!,
+          Positioned(
+            top: (widget.horizontal
+                    ? widget.horizontalListHeight
+                    : widget.verticalListHeight) /
+                8,
+            child: IgnorePointer(
+              ignoring: widget.allowPointerTappable,
+              child: Visibility(
+                visible: widget.showPointer,
+                child: widget.customPointer ?? widget.pointer!,
+              ),
             ),
           ),
           // For details on this widget check out the document here https://api.flutter.dev/flutter/widgets/IgnorePointer-class.html

@@ -1,3 +1,4 @@
+import 'package:example/weight_selector_example.dart';
 import 'package:example/wheelslider_with_double.dart';
 import 'package:example/widgets/custom_box.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const WeightSelector(),
     );
   }
 }
