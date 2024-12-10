@@ -43,6 +43,8 @@ class WheelSlider extends StatefulWidget {
   num? currentIndex;
   final ScrollPhysics? scrollPhysics;
   final BarUi? barUIBuilder;
+  final double? pointerPositinFromTop;
+  final double? pointerPositinFromStart;
 
   /// - When this is set to FALSE scroll functionality won't work for the occupied region.
   /// - When using customPointer with GestureDetector/InkWell, set it to FALSE to enable gestures.
@@ -86,6 +88,8 @@ class WheelSlider extends StatefulWidget {
       this.enableAnimation = true,
       this.animationDuration = const Duration(seconds: 1),
       this.animationType = Curves.easeIn,
+      this.pointerPositinFromTop,
+      this.pointerPositinFromStart,
       this.barUIBuilder})
       : assert(perspective <= 0.01),
         selectedNumberStyle = null,
@@ -181,6 +185,8 @@ class WheelSlider extends StatefulWidget {
     this.animationDuration = const Duration(seconds: 1),
     this.animationType = Curves.easeIn,
     this.barUIBuilder,
+    this.pointerPositinFromTop,
+    this.pointerPositinFromStart,
   })  : assert(perspective <= 0.01),
         lineColor = null,
         children = List.generate(totalCount + 1, (index) {
@@ -246,6 +252,8 @@ class WheelSlider extends StatefulWidget {
     this.animationDuration = const Duration(seconds: 1),
     this.animationType = Curves.easeIn,
     this.barUIBuilder,
+    this.pointerPositinFromTop,
+    this.pointerPositinFromStart,
   })  : assert(perspective <= 0.01),
         lineColor = null,
         selectedNumberStyle = null,
@@ -370,11 +378,17 @@ class _WheelSliderState extends State<WheelSlider> {
             squeeze: widget.squeeze,
             physics: widget.scrollPhysics,
           ),
-          Positioned(
-            top: (widget.horizontal
-                    ? widget.horizontalListHeight
-                    : widget.verticalListHeight) /
-                8,
+          PositionedDirectional(
+            top: widget.pointerPositinFromTop ??
+                ((widget.horizontal
+                        ? widget.horizontalListHeight
+                        : widget.verticalListHeight) /
+                    8),
+            start: widget.pointerPositinFromStart ??
+                ((widget.horizontal
+                        ? widget.horizontalListWidth
+                        : widget.verticalListWidth) /
+                    4),
             child: IgnorePointer(
               ignoring: widget.allowPointerTappable,
               child: Visibility(
