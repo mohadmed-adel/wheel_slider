@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wheel_chooser/wheel_chooser.dart';
 
+typedef BarUi = List<Widget> Function(
+    int totalCount, bool horizontal, Color? lineColor, num interval);
+
 //ignore: must_be_immutable
 class WheelSlider extends StatefulWidget {
   final double horizontalListHeight,
@@ -37,6 +40,7 @@ class WheelSlider extends StatefulWidget {
   final List<Widget> children;
   num? currentIndex;
   final ScrollPhysics? scrollPhysics;
+  final BarUi? barUIBuilder;
 
   /// - When this is set to FALSE scroll functionality won't work for the occupied region.
   /// - When using customPointer with GestureDetector/InkWell, set it to FALSE to enable gestures.
@@ -49,41 +53,44 @@ class WheelSlider extends StatefulWidget {
   final Duration animationDuration;
   final Curve animationType;
 
-  WheelSlider({
-    Key? key,
-    this.horizontalListHeight = 50,
-    this.horizontalListWidth = double.infinity,
-    this.verticalListHeight = 400.0,
-    this.verticalListWidth = 50.0,
-    required this.totalCount,
-    required this.initValue,
-    required this.onValueChanged,
-    this.itemSize = 10,
-    this.perspective = 0.0007,
-    this.listWidth = 100,
-    this.listHeight,
-    this.isInfinite = true,
-    this.horizontal = true,
-    this.squeeze = 1.0,
-    this.lineColor = Colors.black87,
-    this.pointerColor = Colors.black,
-    this.pointerHeight = 50.0,
-    this.pointerWidth = 3.0,
-    this.background = const Center(),
-    this.isVibrate = true,
-    HapticFeedbackType hapticFeedbackType = HapticFeedbackType.vibrate,
-    this.showPointer = true,
-    this.customPointer,
-    this.scrollPhysics,
-    this.allowPointerTappable = true,
-    this.interval = 1,
-    this.enableAnimation = true,
-    this.animationDuration = const Duration(seconds: 1),
-    this.animationType = Curves.easeIn,
-  })  : assert(perspective <= 0.01),
+  WheelSlider(
+      {Key? key,
+      this.horizontalListHeight = 50,
+      this.horizontalListWidth = double.infinity,
+      this.verticalListHeight = 400.0,
+      this.verticalListWidth = 50.0,
+      required this.totalCount,
+      required this.initValue,
+      required this.onValueChanged,
+      this.itemSize = 10,
+      this.perspective = 0.0007,
+      this.listWidth = 100,
+      this.listHeight,
+      this.isInfinite = true,
+      this.horizontal = true,
+      this.squeeze = 1.0,
+      this.lineColor = Colors.black87,
+      this.pointerColor = Colors.black,
+      this.pointerHeight = 50.0,
+      this.pointerWidth = 3.0,
+      this.background = const Center(),
+      this.isVibrate = true,
+      HapticFeedbackType hapticFeedbackType = HapticFeedbackType.vibrate,
+      this.showPointer = true,
+      this.customPointer,
+      this.scrollPhysics,
+      this.allowPointerTappable = true,
+      this.interval = 1,
+      this.enableAnimation = true,
+      this.animationDuration = const Duration(seconds: 1),
+      this.animationType = Curves.easeIn,
+      this.barUIBuilder})
+      : assert(perspective <= 0.01),
         selectedNumberStyle = null,
         unSelectedNumberStyle = null,
-        children = barUI(totalCount, horizontal, lineColor, interval ?? 1),
+        children = barUIBuilder != null
+            ? barUIBuilder(totalCount, horizontal, lineColor, interval ?? 1)
+            : barUI(totalCount, horizontal, lineColor, interval ?? 1),
         currentIndex = null,
         hapticFeedback = hapticFeedbackType.value,
         pointer = customPointer == null
@@ -103,7 +110,8 @@ class WheelSlider extends StatefulWidget {
         : null;
   }
 
-  static List<Widget> barUI(totalCount, horizontal, lineColor, num interval) {
+  static List<Widget> barUI(
+      int totalCount, bool horizontal, Color? lineColor, num interval) {
     return List.generate(
       totalCount + 1,
       (index) => Container(
@@ -170,6 +178,7 @@ class WheelSlider extends StatefulWidget {
     this.enableAnimation = true,
     this.animationDuration = const Duration(seconds: 1),
     this.animationType = Curves.easeIn,
+    this.barUIBuilder,
   })  : assert(perspective <= 0.01),
         lineColor = null,
         children = List.generate(totalCount + 1, (index) {
@@ -234,6 +243,7 @@ class WheelSlider extends StatefulWidget {
     this.enableAnimation = true,
     this.animationDuration = const Duration(seconds: 1),
     this.animationType = Curves.easeIn,
+    this.barUIBuilder,
   })  : assert(perspective <= 0.01),
         lineColor = null,
         selectedNumberStyle = null,
