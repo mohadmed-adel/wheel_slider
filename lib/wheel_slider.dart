@@ -379,16 +379,17 @@ class _WheelSliderState extends State<WheelSlider> {
             physics: widget.scrollPhysics,
           ),
           PositionedDirectional(
-            top: widget.pointerPositinFromTop ??
-                ((widget.horizontal
-                        ? widget.horizontalListHeight
-                        : widget.verticalListHeight) /
-                    8),
-            start: widget.pointerPositinFromStart ??
-                ((widget.horizontal
-                        ? widget.horizontalListWidth
-                        : widget.verticalListWidth) /
-                    4),
+            top: widget.pointerPositinFromTop,
+            // ??
+            //     ((widget.horizontal
+            //             ? widget.horizontalListHeight
+            //             : widget.verticalListHeight) /
+            //         8),
+            start: widget.pointerPositinFromStart,
+            // ((widget.horizontal
+            //         ? widget.horizontalListWidth
+            //         : widget.verticalListWidth) /
+            //     4),
             child: IgnorePointer(
               ignoring: widget.allowPointerTappable,
               child: Visibility(
